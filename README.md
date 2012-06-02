@@ -2,7 +2,7 @@
 
 A simple node.js server to provide current air pollution results from Ulaanbaatar monitoring stations. 
 
-The server can be deployed to Cloud Foundry using the app.js file or run locally (or another server) using index.js.
+The server can be deployed to Cloud Foundry using the app.js file or run locally (or another server) using local_index.js.
 
 ## Purpose
 The purpose of this simple API is to allow for the easier use of the air pollution data that exists for Ulaanbaatar, Mongolia. I was interested in working on a simple project and needed access to this data but it was not available in an easy to get at form. Therefore, I decided to go ahead and create something that would allow others access to the available data in an easy to use manner.
