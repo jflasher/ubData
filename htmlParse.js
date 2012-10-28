@@ -1,6 +1,7 @@
 /*
 	This is only designed to parse HTML from a very specific webpage
 	http://www.ub-air.info/ub-air/laq/average-30min.html
+	http://www.ub-air.info/ub-air/laq/average-24h.html	
 	and return the values as a JSON object. The code is really a hack to 
 	provide an API for accessing the data and is closely tied to the page layout... 
 	which means it's very possible it'll break very easily!
@@ -16,8 +17,8 @@ function parse(html) {
 	
 	// Get the title string
 	var titleString = tableData.substring(tableData.indexOf("<H4>") + 4, tableData.indexOf("</H4>"));
-	resultsObj.startDate = titleString.substring(titleString.indexOf("2"), titleString.indexOf(" - "));
-	resultsObj.endDate = titleString.substr(titleString.indexOf(" - ") + 3, 19);
+	resultsObj.startDate = titleString.substring(titleString.indexOf("2"), titleString.indexOf(" and "));
+	resultsObj.endDate = titleString.substr(titleString.indexOf(" and ") + 5, 19);
 	
 	// Get the column titles
 	resultsObj.properties = getColumnNames(tableData);
@@ -37,15 +38,15 @@ function getColumnNames(tableData) {
 	var propertyString = tableData.substring(tableData.indexOf("<TR>"), tableData.indexOf("</TR>"));
 	var string = "";
 	var keepGoing = true;
-	var startLoc = propertyString.indexOf("<TH>");
+	var startLoc = propertyString.indexOf("<TH ROWSPAN=\"2\">");
 	var endLoc = propertyString.indexOf("</TH>");
 	// Because the first property is nothing, skip over it
-	startLoc = propertyString.indexOf("<TH>", endLoc);
+	startLoc = propertyString.indexOf("<TH class=\"nacha\">", endLoc);
 	endLoc = propertyString.indexOf("</TH>", startLoc);
 	while (keepGoing) {
-		string = propertyString.substring(startLoc + 4, endLoc);
+		string = propertyString.substring(startLoc + 18, endLoc);
 		names.push(string);
-		startLoc = propertyString.indexOf("<TH>", endLoc);
+		startLoc = propertyString.indexOf("<TH class=\"nacha\">", endLoc);
 		endLoc = propertyString.indexOf("</TH>", startLoc);
 		if (startLoc == -1) {
 			keepGoing = false;
@@ -63,12 +64,12 @@ function getUnits(tableData) {
 	var propertyString = tableData.substring(loc1, loc2);
 	var string = "";
 	var keepGoing = true;
-	var startLoc = propertyString.indexOf("<TH>");
+	var startLoc = propertyString.indexOf("<TH class=\"nacha\">");
 	var endLoc = propertyString.indexOf("</TH>");
 	while (keepGoing) {
-		string = propertyString.substring(startLoc + 4, endLoc);
+		string = propertyString.substring(startLoc + 18, endLoc);
 		names.push(string);
-		startLoc = propertyString.indexOf("<TH>", endLoc);
+		startLoc = propertyString.indexOf("<TH class=\"nacha\">", endLoc);
 		endLoc = propertyString.indexOf("</TH>", startLoc);
 		if (startLoc == -1) {
 			keepGoing = false;
@@ -97,24 +98,29 @@ function getStations(tableData) {
 		var propertyString = tableData.substring(rowLoc1, rowLoc2);
 		var string = "";
 		var keepGoing = true;
-		var startLoc = propertyString.indexOf("<TD");
+		var startLoc = propertyString.indexOf("<TD class=\"nacha\">");
+		// Special case for the standards in the last row which we don't want
+		if (startLoc == -1) {
+			break;
+		}
 		var endLoc = propertyString.indexOf("</TD>");
-		startLoc = propertyString.indexOf("<TD", endLoc);
-		endLoc = propertyString.indexOf("</TD>", startLoc);
-		station.name = propertyString.substring(startLoc + 4, endLoc);
-		startLoc = propertyString.indexOf("<TD", endLoc);
+		station.name = propertyString.substring(startLoc + 21, endLoc);
+		startLoc = propertyString.indexOf(">", endLoc+5);
 		endLoc = propertyString.indexOf("</TD>", startLoc);	
 		// Keep reading data cells until we have no more
 		while (keepGoing) {
 			// If there is a number, it's got a class so the string lengths are different
-			if (propertyString.substr(startLoc, 9) == "<TD class") {
-				string = propertyString.substring(startLoc + 24, endLoc);
+/*
+			if (propertyString.substr(startLoc, 26) == "<TD class=\"nachastandard\">") {
+				string = propertyString.substring(startLoc + 26, endLoc);
 			} else {
-				string = propertyString.substring(startLoc + 4, endLoc);
+				string = propertyString.substring(startLoc + 18, endLoc);
 			}
+*/
+			string = propertyString.substring(startLoc + 1, endLoc);
 			
 			values.push(parseFloat(string));
-			startLoc = propertyString.indexOf("<TD", endLoc);
+			startLoc = propertyString.indexOf(">", endLoc+5);
 			endLoc = propertyString.indexOf("</TD>", startLoc);
 			if (startLoc == -1) {
 				keepGoing = false;

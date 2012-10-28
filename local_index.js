@@ -7,6 +7,9 @@ var requestHandlers = require("./requestHandlers");
 
 var handle = {}
 handle["/"] = requestHandlers.showInfo;
-handle["/data"] = requestHandlers.data;
+handle["/data24h"] = requestHandlers.data24h;
+handle["/data30m"] = requestHandlers.data30m;
+handle["/data"] = requestHandlers.data30m;
+handle["/sendTweet"] = requestHandlers.sendTweet;
 
 server.start(8080, router.route, handle);

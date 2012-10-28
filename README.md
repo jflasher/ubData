@@ -10,11 +10,12 @@ The purpose of this simple API is to allow for the easier use of the air polluti
 As described below, the code parses an already existing webpage and pulls out the relevant info. This is super susceptible to breaking since it is dependent on the format of the webpage. I will try to keep up with any changes, but if anything seems to be amiss, please feel free to contact me.
 
 ## Usage
-Right now there is only one API call
+Right now there are only two API calls
 
-> http://ubdata.cloudfoundry.com/data
+> http://ubdata.cloudfoundry.com/data30m
+> http://ubdata.cloudfoundry.com/data24h
 
-This call will return a valid JSON object with a root of "results".
+This call will return a valid JSON object with a root of "results" for 30 minute data or 24 hour data, respectively.
 
 On success, the results object will contain the following items:
 - startDate: The start date of the measurement period
@@ -33,7 +34,7 @@ Each Station object will contain the following items:
 *Note: Because the API is calling out to another webpage and then parsing the data, it can take some time to return the JSON data.*
 
 ## Data Source
-The data is currently coming from http://ub-air.info/ub-air/laq/average-30min.html.
+The data is currently coming from http://ub-air.info/ub-air/laq/average-30min.html and http://ub-air.info/ub-air/laq/average-24h.html.
 
 ## Code Description
 It is a simple node.js server that will connect to the data source and parse the HTML response for the relevant info and return a JSON object. Because the parsing function is tied very intricately to the layout of the webpage, any significant changes to the webpage could very well break the API. Not ideal but it is better than nothing!
