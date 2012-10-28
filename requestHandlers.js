@@ -140,7 +140,7 @@ function sendTweet(response) {
 			pm25 = pm25Arr.sum() * 1000. / pm25Arr.length;
 			var who25 = 25.;
 			var m = (pm25 / who25).toFixed(1);
-			var text = "PM2.5 = " + pm25 + "\u00B5/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting average from " + pm25Arr.length + " of " + stations.length + " stations. #UBAir";
+			var text = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting average from " + pm25Arr.length + " of " + stations.length + " stations. #UBAir";
 			//console.log(text);
 			//console.log(text.length);
 			
