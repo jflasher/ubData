@@ -1,4 +1,5 @@
 var http = require("http");
+var url  = require("url");
 var htmlParse = require("./htmlParse");
 var OAuth= require('oauth').OAuth;
 var keys = require('./twitterkeys');
@@ -100,7 +101,16 @@ function showInfo(response) {
 }
 
 // Send out a tweet with the pollution info
-function sendTweet(response) {
+function sendTweet(response, request) {
+	// Make sure it's a valid request by checking our key
+	var urlParts = url.parse(request.url, true);
+	var key = urlParts.query["key"];
+	//console.log(key);
+	if (key != keys.myServerKey) {
+		response.end();
+		return;
+	}
+	
 	// Get the data
 	var body = '';
 	var options = {
