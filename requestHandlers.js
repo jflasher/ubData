@@ -140,7 +140,23 @@ function sendTweet(response) {
 			pm25 = pm25Arr.sum() * 1000. / pm25Arr.length;
 			var who25 = 25.;
 			var m = (pm25 / who25).toFixed(1);
-			var text = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting average from " + pm25Arr.length + " of " + stations.length + " stations. #UBAir";
+			var d = new Date();
+			var localTime = d.getTime();
+			var localOffset = d.getTimezoneOffset() * 60000;
+			var utc = localTime + localOffset;
+			var offset = 8.0;   
+			var mng = utc + (3600000*offset);
+			var today = new Date(mng);
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+			if(dd<10){dd='0'+dd} 
+			if(mm<10){mm='0'+mm} 
+			var dayString = mm+'/'+dd+'/'+yyyy;
+			var curHour = (today.getHours() < 10 ? "0" + today.getHours() : today.getHours());
+			var curMin = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
+			var timeString = dayString + " " + curHour + ":" + curMin;
+			var text = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting 24hr average from " + pm25Arr.length + " of " + stations.length + " stations as of " + timeString + ". #UBAir";
 			//console.log(text);
 			//console.log(text.length);
 			
