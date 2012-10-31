@@ -105,7 +105,6 @@ function sendTweet(response, request) {
 	// Make sure it's a valid request by checking our key
 	var urlParts = url.parse(request.url, true);
 	var key = urlParts.query["key"];
-	//console.log(key);
 	if (key != keys.myServerKey) {
 		response.end();
 		return;
@@ -146,10 +145,20 @@ function sendTweet(response, request) {
 				return;
 			}
 			
-			// Build the string
+			////
+			// Build the string to tweet
+			////
+			
+			// The average PM value
 			pm25 = pm25Arr.sum() * 1000. / pm25Arr.length;
+			
+			// The WHO recommended value
 			var who25 = 25.;
+			
+			// Find the difference between WHO and current
 			var m = (pm25 / who25).toFixed(1);
+			
+			// Build up the date and time
 			var d = new Date();
 			var localTime = d.getTime();
 			var localOffset = d.getTimezoneOffset() * 60000;
@@ -162,24 +171,26 @@ function sendTweet(response, request) {
 			var yyyy = today.getFullYear();
 			if(dd<10){dd='0'+dd} 
 			if(mm<10){mm='0'+mm} 
-			var dayString = mm+'/'+dd+'/'+yyyy;
+			var dayStringEN = mm+'/'+dd+'/'+yyyy;
 			var dayStringMN = yyyy+'/'+mm+'/'+dd;
 			var curHour = (today.getHours() < 10 ? "0" + today.getHours() : today.getHours());
 			var curMin = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
-			var timeString = dayString + " " + curHour + ":" + curMin;
-			var textEN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting 24hr average from " + pm25Arr.length + " of " + stations.length + " stations as of " + timeString + ". #UBAir";
 			
+			// English string
+			var textEN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting 24hr average from " + pm25Arr.length + " of " + stations.length + " stations as of " + dayStringEN + " " + curHour + ":" + curMin + ". #UBAir";
+			
+			// Mongolian string
 			var textMN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, энэ нь " + m + "X буюу WHO 24 цагийн стандарт. " + dayStringMN + " ны " + curHour + ":" + curMin + " цагийн байдлаар 24 цагийн дундажтай " + stations.length + " станцын " + pm25Arr.length + " ээс мэдээлэв.";
 			
 			
-			//console.log(textEN);
-			//console.log(textMN);
+			console.log(textEN);
+			console.log(textMN);
 			//console.log(textEN.length);
 			//console.log(textMN.length);
 			
-			// Tweet it!
+			// Tweet the English then tweet the Mongolian 30 seconds later to ensure it shows up in feeds
 			tweet(textEN);
-			tweet(textMN);
+			setTimeout(function() {tweet(textMN);},30000);
 			response.end();
 		});
 	});
@@ -196,7 +207,8 @@ var tweet = function(text) {
 		null,
 		"HMAC-SHA1"
 	);
-    var body = ({'status': text});
+	// Lat/lon 47.920709, 106.905848
+    var body = ({'status': text, 'lat': 47.920709, 'long': 106.905848});
 	tweeter.post("http://api.twitter.com/1/statuses/update.json",
 	keys.token, keys.secret, body, "application/json",
 	function (error, data, response) {
