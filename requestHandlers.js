@@ -177,10 +177,10 @@ function sendTweet(response, request) {
 			var curMin = today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
 			
 			// English string
-			var textEN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr standard. Reporting 24hr average from " + pm25Arr.length + " of " + stations.length + " stations as of " + dayStringEN + " " + curHour + ":" + curMin + ". #UBAir";
+			var textEN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3, this is " + m + "X the WHO 24hr guideline. Reporting 24hr average from " + pm25Arr.length + " of " + stations.length + " stations as of " + dayStringEN + " " + curHour + ":" + curMin + ". #UBAir";
 			
 			// Mongolian string
-			var textMN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3. ДЭМБ 24 цагийн стандартай харицуулхад " + m + "X. " + dayStringMN + ", " + curHour + ":" + curMin + " цагийн байдлаар 24 цагийн дунджаар " + stations.length + " станцын " + pm25Arr.length + " ээс мэдээлэв.";
+			var textMN = "PM2.5 = " + pm25 + "\u00B5g/m\u00B3. ДЭМБ 24 цагийн удирдамж харицуулхад " + m + "X. " + dayStringMN + ", " + curHour + ":" + curMin + " цагийн байдлаар 24 цагийн дунджаар " + stations.length + " станцын " + pm25Arr.length + " ээс мэдээлэв.";
 			
 			//console.log(textEN);
 			//console.log(textMN);
