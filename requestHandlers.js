@@ -150,7 +150,7 @@ function sendTweet(response, request) {
 			////
 			
 			// The average PM value
-			pm25 = pm25Arr.sum() * 1000. / pm25Arr.length;
+			pm25 = (pm25Arr.sum() * 1000. / pm25Arr.length).toFixed(0);
 			
 			// The WHO recommended value
 			var who25 = 25.;
