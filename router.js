@@ -1,10 +1,30 @@
-function route(handle, pathname, response, request) {
-  if (typeof handle[pathname] === 'function') {
-    handle[pathname](response, request);
-  } else {
-    response.writeHead(404, {"Content-Type": "text/html"});
-    response.end("404 Not found");
-  }
-}
+var requestHandlers = require('./requestHandlers');
+var keys = require('./twitterkeys');
 
-exports.route = route;
+var routes = function (app) {
+  app.get('/', function (req, res) {
+    res.render('index', function (err, html) {
+      if (err) {
+        console.log(err);
+        res.end();
+      } else {
+        res.end(html);
+      }
+    });
+  });
+
+  app.get('/1/mostRecent', function (req, res) {
+    requestHandlers.getMostRecent(req, res);
+  });
+
+  app.get('/1/sendTweet', function (req, res) {
+    var key = req.param('key');
+    if (key && key === keys.myServerKey) {
+      requestHandlers.sendTweet(req, res);
+    } else {
+      res.end('{"results": {"error": "incorrect key"}}');
+    }
+  });
+};
+
+module.exports = routes;
