@@ -1,15 +1,22 @@
 /*
 	Simple server to handle an incoming API call for data
 */
-var server = require("./server");
-var router = require("./router");
-var requestHandlers = require("./requestHandlers");
+var express = require('express');
+var app = express();
 
-var handle = {}
-handle["/"] = requestHandlers.showInfo;
-handle["/data24h"] = requestHandlers.data24h;
-handle["/data30m"] = requestHandlers.data30m;
-handle["/data"] = requestHandlers.data30m;
-handle["/sendTweet"] = requestHandlers.sendTweet;
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').__express);
+app.set('view engine', 'html');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(__dirname + '/public'));
 
-server.start(process.env.VCAP_APP_PORT, router.route, handle);
+require("./router")(app);
+
+app.listen(app.get('port'), function () {
+  console.log("Listening on " + app.get('port'));
+});

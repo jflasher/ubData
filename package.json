@@ -1,8 +1,13 @@
 {
- "name":"ubdata",
-  "version":"0.0.1",
-  "dependencies":{
-      "http":"",
-      "url":""
+ "name": "ubdata",
+  "version": "0.0.2",
+  "dependencies": {
+      "oauth": "*",
+      "express": "3.1.x",
+      "ejs": "*"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
   }
 }
