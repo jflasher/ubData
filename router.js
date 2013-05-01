@@ -32,7 +32,7 @@ var routes = function (app) {
 
   app.get('/1/sendTweet', function (req, res) {
     var key = req.param('key');
-    if (key && key === process.env.SERVER_KEY) {
+    if (key && key == process.env.SERVER_KEY) {
       requestHandlers.sendTweet(req, res);
     } else {
       res.end('{"results": {"error": "incorrect key"}}');

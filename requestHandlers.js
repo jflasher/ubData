@@ -87,7 +87,7 @@ var sendTweet = function (req, res) {
 		var date = new Date(((data.endTime - data.startTime) * 0.5) + data.startTime);
 		var startTime = new Date(data.startTime);
 		var endTime = new Date(data.endTime);
-		var dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + startTime.getHours() + ':' + startTime.getMinutes() + '-' + endTime.getHours() + ':' + endTime.getMinutes();
+		var dateString = date.getFullYear() + '-' + addZero((date.getMonth() + 1)) + '-' + addZero(date.getDate()) + '; ' + addZero(startTime.getHours()) + ':' + addZero(startTime.getMinutes()) + '-' + addZero(endTime.getHours()) + ':' + addZero(endTime.getMinutes());
 		mnString += dateString + '; ';
 		enString += dateString + '; ';
 
@@ -105,10 +105,10 @@ var sendTweet = function (req, res) {
 		// console.log(mnString.length);
 
 		// Tweet the English then tweet the Mongolian 30 seconds later to ensure it shows up in feeds
-		// tweet(enString);
-		// setTimeout( function () {
-		// 	tweet(mnString);
-		// }, 30000);
+		tweet(enString);
+		setTimeout( function () {
+			tweet(mnString);
+		}, 30000);
 		res.end('{"results": {"success": "1"}}');
 
 	});
@@ -168,7 +168,15 @@ var getAQIStrings = function (pm25) {
 	}
 
 	return aqi;
-}
+};
+
+var addZero = function (num) {
+	if (num < 10) {
+		return '0' + num;
+	} else {
+		return num;
+	}
+};
 
 exports.getMostRecent = getMostRecent;
 exports.sendTweet = sendTweet;
