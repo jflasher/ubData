@@ -1,5 +1,17 @@
 var https = require("https");
 var OAuth= require('oauth').OAuth;
+var mongodb = require('mongodb');
+
+var mongoUri = process.env.MONGOHQ_URL || 
+  'mongodb://localhost/ubdata';
+
+var collection;
+
+mongodb.Db.connect(mongoUri, function (err, db) {
+  db.collection('measurements', function(er, aCollection) {
+    collection = aCollection;
+  });
+});
 
 // Get the most recent data
 var getData = function (callback) {
@@ -54,6 +66,7 @@ var getMostRecent = function (req, res) {
 			res.end('{"results": {"error": "no data"}}');
 		} else {
 			res.end(JSON.stringify(data));
+			collection.update( { startTime: data.startTime }, data, { upsert: true } );
 		}
 	});
 };
