@@ -4,6 +4,14 @@ var routes = function (app) {
   ////
   //// Version 1
   ////
+  app.get('/', function (req, res) {
+    res.render('index', { page: 'root' });
+  });
+
+  app.get('/api', function (req, res) {
+    res.render('api', { page: 'api' });
+  });
+
   app.get('/1/mostRecent', function (req, res) {
     requestHandlers.getMostRecent(req, res);
   });
