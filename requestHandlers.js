@@ -2,16 +2,23 @@ var https = require("https");
 var OAuth= require('oauth').OAuth;
 var mongodb = require('mongodb');
 
-var mongoUri = process.env.MONGOHQ_URL || 
-  'mongodb://localhost/ubdata';
-
+// Mongo details
+var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/ubdata';
 var collection;
-
 mongodb.Db.connect(mongoUri, function (err, db) {
   db.collection('measurements', function(er, aCollection) {
     collection = aCollection;
   });
 });
+
+// Set a process that will try to save the data to the database repeatedly
+setInterval(function () {
+	getData(function (data) {
+		if (data !== undefined) {
+			saveToDatabase(data);
+		}
+	});
+}, 2 * 60 * 60 * 1000);	// 2 hours
 
 // Get the most recent data
 var getData = function (callback) {
@@ -66,7 +73,6 @@ var getMostRecent = function (req, res) {
 			res.end('{"results": {"error": "no data"}}');
 		} else {
 			res.end(JSON.stringify(data));
-			collection.update( { startTime: data.startTime }, data, { upsert: true } );
 		}
 	});
 };
@@ -152,6 +158,16 @@ var tweet = function(text) {
 Array.prototype.sum = function() {
 	for (var i = 0, L = this.length, sum = 0; i < L; sum += this[i++]);
 	return sum;
+};
+
+var saveToDatabase = function (data) {
+	// Make sure we have a valid collection
+	if (!collection) {
+		return;
+	}
+
+	// Update the record, making sure a measurement is unique on startTime. 
+	collection.update( { startTime: data.startTime }, data, { upsert: true } );
 };
 
 var getAQIStrings = function (pm25) {
