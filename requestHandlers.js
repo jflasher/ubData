@@ -11,15 +11,6 @@ mongodb.Db.connect(mongoUri, function (err, db) {
   });
 });
 
-// Set a process that will try to save the data to the database repeatedly
-setInterval(function () {
-	getData(function (data) {
-		if (data !== undefined) {
-			saveToDatabase(data);
-		}
-	});
-}, 2 * 60 * 60 * 1000);	// 2 hours
-
 // Get the most recent data
 var getData = function (callback) {
 	// Not sure this url will always work?
@@ -57,6 +48,9 @@ var getData = function (callback) {
 			};
 			measurement.station = station;
 
+			// Update data every time we're getting new data
+			saveToDatabase(measurement);
+
 			callback(measurement);
 		});
 
@@ -90,6 +84,7 @@ var sendTweet = function (req, res) {
 	getData(function (data) {
 		// Make sure we have data 
 		if (data === undefined) {
+			console.log("ERROR no data.");
 			res.end('{"results": {"error": "no data"}}');
 			return;
 		}
@@ -100,6 +95,7 @@ var sendTweet = function (req, res) {
 		var mnLocal = new Date(utcLocal + (3600000*8));
 		var diff = mnLocal - data.endTime;
 		if (diff > 3 * 60 * 60 * 1000) {
+			console.log("ERROR data older than 3 hours.");
 			res.end('{"results": {"error": "data older than 3hr"}}');
 			return;
 		}
