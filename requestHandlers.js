@@ -77,6 +77,14 @@ var getMostRecent = function (req, res) {
 	});
 };
 
+var getMostRecentMeasurements = function (callback) {
+	if (collection === undefined) {
+		return undefined;
+	}
+
+	collection.find({}).toArray(callback);
+};
+
 // Send out a tweet with the pollution info
 var sendTweet = function (req, res) {
 	getData(function (data) {
@@ -207,5 +215,6 @@ var addZero = function (num) {
 	}
 };
 
+exports.getMostRecentMeasurements = getMostRecentMeasurements;
 exports.getMostRecent = getMostRecent;
 exports.sendTweet = sendTweet;

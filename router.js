@@ -12,6 +12,25 @@ var routes = function (app) {
     res.render('api', { page: 'api' });
   });
 
+  app.get('/charts', function (req, res) {
+    res.render('charts', { page: 'charts' });
+  });
+
+
+  ////
+  // Version 1
+  ////
+  app.get('/1/mostRecentMeasurements', function (req, res) {
+    requestHandlers.getMostRecentMeasurements(function (err, data) {
+      if (err) {
+        res.end(undefined);
+        return;
+      }
+
+      res.end(JSON.stringify(data));
+    });
+  });
+
   app.get('/1/mostRecent', function (req, res) {
     requestHandlers.getMostRecent(req, res);
   });
