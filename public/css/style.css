@@ -54,6 +54,14 @@ body {
   padding-bottom: 40px;
 }
 
+.footer .button-toolbar {
+  float: left;
+}
+
+.footer p {
+  float: left;
+}
+
 /* Custom container */
 .container-narrow {
   margin: 0 auto;
