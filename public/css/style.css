@@ -1,5 +1,7 @@
-#chart {
+/* Chart styles */
+#charts {
   font: 10px sans-serif;
+  height: 600px;
 }
 
 .axis path,
@@ -15,8 +17,36 @@
 
 .line {
   fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+#chartFooter {
+  text-align: center;
+}
+
+.chart {
+  position: absolute;
+}
+
+.circleColor1 {
+  fill: #01e24b;
+}
+
+.circleColor2 {
+  fill: #fff958;
+}
+
+.circleColor3 {
+  fill: #ff7c30;
+}
+
+.circleColor4 {
+  fill: #ff211d;
+}
+
+.circleColor5 {
+  fill: #7f0c24;
 }
 
 body {

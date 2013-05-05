@@ -1,90 +1,25 @@
 <% include header.html %>
 
-      <div id="chart">
-      </div>
+<ul class="nav nav-tabs">
+  <li id="btn3hrAverage" class="active"><a href="">3hr Average</a></li>
+  <li id="btnDailyAverage"><a href="">Daily Average</a></li>
+  <li id="btnMonthlyAverage"><a href="">Monthly Average</a></li>
+</ul>
 
-      <script src="http://d3js.org/d3.v3.js"></script>
-      <script>
+<div id="charts">
+  <div id="chart3hr" class="chart"></div>
+  <div id="chartDay" class="chart">
+    <span class="label"><h3>Coming soon...</h3></span>
+  </div>
+  <div id="chartMonth" class="chart">
+    <span class="label"><h3>Coming soon...</h3></span>
+  </div>
+</div>
+<div id="chartFooter">
+  Data available from <a href="http://ubdata.herokuapp.com/1/mostRecentMeasurements">http://ubdata.herokuapp.com/1/mostRecentMeasurements</a>.
+</div>
 
-      var margin = {top: 20, right: 20, bottom: 30, left: 50},
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
-
-      var x = d3.time.scale()
-          .range([0, width]);
-
-      var y = d3.scale.linear()
-          .range([height, 0]);
-
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom");
-
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left");
-
-      var line = d3.svg.line()
-          .interpolate('cardinal')
-          .x(function(d) { return x(d.date); })
-          .y(function(d) { return y(d.pm25); });
-
-      var svg = d3.select("#chart").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");       
-
-      d3.xhr("/1/mostRecentMeasurements", function(error, data) {
-        if (error) {
-          console.log(error);
-          return;
-        }
-        data = JSON.parse(data.response);
-        data.forEach(function(d) {
-          d.date = d.startTime + (d.endTime - d.startTime) * 0.5;
-          d.pm25 = d.pm25;
-        });
-
-        x.domain(d3.extent(data, function(d) { return d.date; }));
-        y.domain(d3.extent(data, function(d) { return d.pm25; }));
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
-          .append("text")
-            .attr("transform", "translate(0,30)")
-            .attr("x", width * 0.5)
-            .attr("dx", ".71em")
-            .style("text-anchor", "end")
-            .text("Time (ULAT)");
-
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-          .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("PM2.5 (\u00B5g/m\u00B9)");
-
-   svg.selectAll("circle")
-            .data(data)
-            .enter().append("svg:circle")
-            .attr("cx", function(d) { return x(d.date); })
-            .attr("cy", function(d) { return y(d.pm25); })
-            .attr("r", 5);
-
-        svg.append("path")
-            .datum(data)
-            .attr("class", "line")
-            .attr("d", line);
-
-      });
-
-      </script>
-
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/js/charts.js"></script>
+    
 <% include footer.html %>
