@@ -85,10 +85,10 @@ d3.xhr("/1/mostRecentMeasurements", function(error, data) {
       .attr("cy", function(d) { return y(d.pm25); })
       .attr("r", 5);
 
-  svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
+  // svg.append("path")
+  //     .datum(data)
+  //     .attr("class", "line")
+  //     .attr("d", line);
 
 });
 
