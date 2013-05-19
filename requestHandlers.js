@@ -107,7 +107,7 @@ var getDailyMeasurements = function (callback) {
 				// New day, get average and push the value
 				dayAverage = dayTotal / count;
 				console.log(dayTotal, count);
-				dailyRecords.push({ date: lastDay.toString(), pm25: dayAverage });
+				dailyRecords.push({ date: Date.parse(lastDay), pm25: dayAverage });
 				count = 1;
 				dayTotal = record.pm25;
 				lastDay = day;
@@ -115,7 +115,7 @@ var getDailyMeasurements = function (callback) {
 		}
 		// And add the last one
 		dayAverage = dayTotal / count;
-		dailyRecords.push({ date: lastDay.toString(), pm25: dayAverage });
+		dailyRecords.push({ date: Date.parse(lastDay), pm25: dayAverage });
 
 		callback(err, dailyRecords);
 	});
