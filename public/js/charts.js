@@ -38,7 +38,7 @@ var svg = d3.select("#chart3hr").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");       
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.xhr("/1/mostRecentMeasurements", function(error, data) {
   if (error) {
@@ -85,6 +85,18 @@ d3.xhr("/1/mostRecentMeasurements", function(error, data) {
       .attr("cy", function(d) { return y(d.pm25); })
       .attr("r", 5);
 
+  $('svg circle').tipsy({
+    gravity: 's',
+    html: true,
+    fade: true,
+    title: function() {
+      var d = this.__data__;
+      var prettyDate = new Date(d.date);
+      prettyDate = prettyDate.toLocaleString();
+      return '<p>Date: ' + prettyDate + '<br/>PM2.5: ' + d.pm25 + '</p>';
+    }
+  });
+
   // svg.append("path")
   //     .datum(data)
   //     .attr("class", "line")
@@ -113,7 +125,7 @@ $('#btnMonthlyAverage').on('click', function (e) {
   $(this).addClass('active');
   $('#chart3hr').hide();
   $('#chartDay').hide();
-  $('#chartMonth').show();  
+  $('#chartMonth').show();
 });
 
 $('#btn3hrAverage').on('click', function (e) {
