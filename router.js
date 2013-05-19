@@ -31,6 +31,17 @@ var routes = function (app) {
     });
   });
 
+  app.get('/1/dailyMeasurements', function (req, res) {
+    requestHandlers.getDailyMeasurements(function (err, data) {
+      if (err) {
+        res.end(undefined);
+        return;
+      }
+
+      res.end(JSON.stringify(data));
+    });
+  });
+
   app.get('/1/mostRecent', function (req, res) {
     requestHandlers.getMostRecent(req, res);
   });

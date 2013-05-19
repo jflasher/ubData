@@ -79,6 +79,48 @@ var getMostRecentMeasurements = function (callback) {
 	collection.find({}).toArray(callback);
 };
 
+var getDailyMeasurements = function (callback) {
+	if (collection === undefined) {
+		return undefined;
+	}
+
+	// Get all the records
+	collection.find({}).toArray(function (err, records) {
+		// Take the average for a given day
+		var dailyRecords = [];
+		var lastDay;
+		var dayTotal = 0;
+		var count = 0;
+		var dayAverage = 0;
+		for (var i = 0; i < records.length; i++) {
+			var record = records[i];
+			var midpoint = (record.endTime - record.startTime) * 0.5 + record.startTime;
+			midpoint += (60000 * new Date().getTimezoneOffset()); // convert it to mn time
+			midpoint = new Date(midpoint);
+			var day = new Date(midpoint.getFullYear(), midpoint.getMonth(), midpoint.getDate());
+			if (i === 0 || day.toString() === lastDay.toString()) {
+				// Add to previous total
+				dayTotal += record.pm25;
+				count++;
+				lastDay = day;
+			} else {
+				// New day, get average and push the value
+				dayAverage = dayTotal / count;
+				console.log(dayTotal, count);
+				dailyRecords.push({ date: lastDay.toString(), pm25: dayAverage });
+				count = 1;
+				dayTotal = record.pm25;
+				lastDay = day;
+			}
+		}
+		// And add the last one
+		dayAverage = dayTotal / count;
+		dailyRecords.push({ date: lastDay.toString(), pm25: dayAverage });
+
+		callback(err, dailyRecords);
+	});
+};
+
 // Send out a tweet with the pollution info
 var sendTweet = function (req, res) {
 	getData(function (data) {
@@ -214,3 +256,4 @@ var addZero = function (num) {
 exports.getMostRecentMeasurements = getMostRecentMeasurements;
 exports.getMostRecent = getMostRecent;
 exports.sendTweet = sendTweet;
+exports.getDailyMeasurements = getDailyMeasurements;
