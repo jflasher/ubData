@@ -136,11 +136,11 @@ var sendTweet = function (req, res) {
 		var utcLocal = dLocal.getTime() + (dLocal.getTimezoneOffset() * 60000);
 		var mnLocal = new Date(utcLocal + (3600000*8));
 		var diff = mnLocal - data.endTime;
-		if (diff > 3 * 60 * 60 * 1000) {
-			console.log("ERROR data older than 3 hours.");
-			res.end('{"results": {"error": "data older than 3hr"}}');
-			return;
-		}
+		// if (diff > 3 * 60 * 60 * 1000) {
+		// 	console.log("ERROR data older than 3 hours.");
+		// 	res.end('{"results": {"error": "data older than 3hr"}}');
+		// 	return;
+		// }
 
 		////
 		// Build the string to tweet
@@ -192,7 +192,7 @@ var tweet = function(text) {
 	);
 	// Lat/lon 47.920709, 106.905848
   var body = ({'status': text, 'lat': 47.920709, 'long': 106.905848});
-	tweeter.post("http://api.twitter.com/1/statuses/update.json",
+	tweeter.post("https://api.twitter.com/1.1/statuses/update.json",
 	process.env.TWITTER_TOKEN, process.env.TWITTER_SECRET, body, "application/json",
 	function (error, data, response) {
 		if (error) {
