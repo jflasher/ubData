@@ -157,12 +157,12 @@ var sendTweet = function (req, res) {
 		enString += dateString + '; ';
 
 		// Get pm value
-		enString += 'PM2.5=' + data.pm25.toFixed(0) + '\u00B5g/m\u00B3 (3hr avg); ';
-		mnString += 'PM2.5=' + data.pm25.toFixed(0) + '\u00B5g/m\u00B3 (3цагийн дундаж); ';
+		enString += 'PM2.5=' + data.pm25.toFixed(0) + '\u00B5g/m\u00B3 [3hr avg]; ';
+		mnString += 'PM2.5=' + data.pm25.toFixed(0) + '\u00B5g/m\u00B3 [3цагийн дундаж]; ';
 
 		// Get AQI
-		enString += getAQIStrings(data.pm25).en + ' (for 24-hr exposure at this level)';
-		mnString += getAQIStrings(data.pm25).mn + ' (Тухайн төвшингөөр 24-цагт авах тун)';
+		enString += getAQIStrings(data.pm25).en + ' [for 24hr exposure at this level]';
+		mnString += getAQIStrings(data.pm25).mn + ' [Тухайн төвшингөөр 24-цагт авах тун]';
 
 		console.log(enString);
 		console.log(mnString);
@@ -190,13 +190,13 @@ var tweet = function(text) {
 		null,
 		"HMAC-SHA1"
 	);
-	// Lat/lon 47.920709, 106.905848
+
   var body = ({'status': text, 'lat': 47.920709, 'long': 106.905848});
 	tweeter.post("https://api.twitter.com/1.1/statuses/update.json",
 	process.env.TWITTER_TOKEN, process.env.TWITTER_SECRET, body, "application/json",
 	function (error, data, response) {
 		if (error) {
-			console.log('{"results": {"error": "' + JSON.stringify(error) + '"}}');
+			console.log('{"results": {"error": ' + JSON.stringify(error) + '}}');
 		}
 	});
 };
