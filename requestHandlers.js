@@ -137,11 +137,11 @@ var sendTweet = function (req, res) {
 		var utcLocal = dLocal.getTime() + (dLocal.getTimezoneOffset() * 60000);
 		var mnLocal = new Date(utcLocal + (3600000*8));
 		var diff = mnLocal - data.endTime;
-		if (diff > 3 * 60 * 60 * 1000) {
-			console.log("ERROR data older than 3 hours.");
-			res.end('{"results": {"error": "data older than 3hr"}}');
-			return;
-		}
+		// if (diff > 3 * 60 * 60 * 1000) {
+		// 	console.log("ERROR data older than 3 hours.");
+		// 	res.end('{"results": {"error": "data older than 3hr"}}');
+		// 	return;
+		// }
 
 		////
 		// Build the string to tweet
