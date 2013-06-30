@@ -1,6 +1,7 @@
 var https = require("https");
 var OAuth= require('oauth').OAuth;
 var mongodb = require('mongodb');
+var querystring = require('querystring');
 
 // Mongo details
 var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/ubdata';
@@ -136,11 +137,11 @@ var sendTweet = function (req, res) {
 		var utcLocal = dLocal.getTime() + (dLocal.getTimezoneOffset() * 60000);
 		var mnLocal = new Date(utcLocal + (3600000*8));
 		var diff = mnLocal - data.endTime;
-		// if (diff > 3 * 60 * 60 * 1000) {
-		// 	console.log("ERROR data older than 3 hours.");
-		// 	res.end('{"results": {"error": "data older than 3hr"}}');
-		// 	return;
-		// }
+		if (diff > 3 * 60 * 60 * 1000) {
+			console.log("ERROR data older than 3 hours.");
+			res.end('{"results": {"error": "data older than 3hr"}}');
+			return;
+		}
 
 		////
 		// Build the string to tweet
@@ -174,6 +175,14 @@ var sendTweet = function (req, res) {
 		setTimeout( function () {
 			tweet(mnString);
 		}, 30000);
+
+		// Send to Facebook in English then in Mongolian after a delay
+		facebook(enString);
+		setTimeout( function () {
+			facebook(mnString);
+		}, 30000);
+
+		// End the request
 		res.end('{"results": {"success": "1"}}');
 
 	});
@@ -199,6 +208,40 @@ var tweet = function(text) {
 			console.log('{"results": {"error": ' + JSON.stringify(error) + '}}');
 		}
 	});
+};
+
+var facebook = function(text) {
+	var postData = {
+		'access_token': process.env.FACEBOOK_ACCESS_TOKEN,
+		'message': text
+	};
+	postData = querystring.stringify(postData);
+
+  var options = {
+    host: 'graph.facebook.com',
+    port: 443,
+    path: '/' + process.env.FACEBOOK_PAGE + '/feed',
+    method: 'POST',
+    headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Conent-Length': postData.length
+    }
+  };
+
+  var req = https.request(options, function (res) {
+    var data = '';
+    res.on('data', function (d) {
+      data += d;
+    });
+
+    res.on('end', function () {
+      data = JSON.parse(data);
+      console.log(data);
+    });
+  });
+
+	req.write(postData);
+  req.end();
 };
 
 Array.prototype.sum = function() {
