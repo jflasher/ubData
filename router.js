@@ -16,14 +16,6 @@ var routes = function (app) {
     res.render('charts', { page: 'charts' });
   });
 
-  app.get('/fb', function (req, res) {
-    console.log(req);
-    if (req.query.code) {
-      res.redirect('https://graph.facebook.com/oauth/access_token?client_id=526656990715042&redirect_uri=http://flasher.islsandbox.com/fb&client_secret=9a77e4826d16838b150275b36d8e2a7a&code=' + req.query.code);
-    }
-  });
-
-
   ////
   // Version 1
   ////
