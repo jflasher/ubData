@@ -278,7 +278,7 @@ var getAQIStrings = function (pm25) {
 		aqi.en = 'Very Unhealthy';
 		aqi.mn = 'Эрүүл мэндэд маш муу';
 	} else if (pm25 <= 500.4) {
-		aqi.en = 'Hazradous';
+		aqi.en = 'Hazardous';
 		aqi.mn = 'Аюултай';
 	} else {
 		aqi.en = 'Beyond Index';
