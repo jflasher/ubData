@@ -51,6 +51,7 @@ d3.xhr("/1/mostRecentMeasurements", function(error, data) {
     var midpoint = (d.endTime - d.startTime) * 0.5 + d.startTime;
     d.date = midpoint + (60000 * new Date().getTimezoneOffset());  // Convert to mn time
     d.pm25 = d.pm25;
+    console.log(d);
   });
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
