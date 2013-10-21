@@ -56,6 +56,7 @@ d3.xhr("/1/mostRecentMeasurements", function(error, data) {
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain(d3.extent(data, function(d) { return d.pm25; }));
 
+
   svg3hr.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
