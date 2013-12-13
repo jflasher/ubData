@@ -163,7 +163,7 @@ var sendTweet = function (req, res) {
 
 		// Get AQI
 		enString += getAQIStrings(data.pm25).en + ' [for 24hr exposure at this level]';
-		mnString += getAQIStrings(data.pm25).mn + ' [Тухайн төвшингөөр 24-цагт авах тун]';
+		mnString += getAQIStrings(data.pm25).mn;
 
 		console.log(enString);
 		console.log(mnString);
