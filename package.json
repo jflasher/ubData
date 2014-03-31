@@ -2,9 +2,9 @@
  "name": "ubdata",
   "version": "0.0.2",
   "dependencies": {
-      "oauth": "*",
+      "oauth": "0.9.11",
       "express": "3.1.x",
-      "ejs": "*",
+      "ejs": "1.0.0",
       "mongodb" : "1.3.x"
   },
   "engines": {
