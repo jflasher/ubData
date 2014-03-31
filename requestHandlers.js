@@ -128,8 +128,13 @@ var sendTweet = function (req, res) {
 		// Make sure we have data 
 		if (data === undefined) {
 			console.log("ERROR no data.");
-			res.end('{"results": {"error": "no data"}}');
-			return;
+			return res.json(404, {"results": {"error": "no data"}});
+		}
+
+		// Make sure the pm value is good
+		if (isNaN(data.pm25)) {
+			console.log("ERROR pm is NaN");
+			return res.json(404, {"results": {"error": "bad pm value"}});
 		}
 
 		// Make sure the data is from within the last 3 hours
@@ -139,8 +144,7 @@ var sendTweet = function (req, res) {
 		var diff = mnLocal - data.endTime;
 		if (diff > 3 * 60 * 60 * 1000) {
 			console.log("ERROR data older than 3 hours.");
-			res.end('{"results": {"error": "data older than 3hr"}}');
-			return;
+			return res.json(404, {"results": {"error": "data older than 3hr"}});
 		}
 
 		////
