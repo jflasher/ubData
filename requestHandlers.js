@@ -260,7 +260,13 @@ var saveToDatabase = function (data) {
 	}
 
 	// Update the record, making sure a measurement is unique on startTime. 
-	collection.update( { startTime: data.startTime }, data, { upsert: true } );
+	collection.update( { startTime: data.startTime }, data, { upsert: true }, function(err) {
+		if (err) {
+			console.warn(err.message);
+		} else {
+			console.log('successfully updated');
+		}
+    });
 };
 
 var getAQIStrings = function (pm25) {
