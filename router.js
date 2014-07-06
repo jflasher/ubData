@@ -1,19 +1,22 @@
+'use strict';
+
 var requestHandlers = require('./requestHandlers');
 
 var routes = function (app) {
+  var s3Base = 'http://data.sciencerely.org/mongolia';
   ////
   //// Version 1
   ////
   app.get('/', function (req, res) {
-    res.render('index', { page: 'root' });
+    res.redirect(301, s3Base);
   });
 
   app.get('/api', function (req, res) {
-    res.render('api', { page: 'api' });
+    res.redirect(301, s3Base + '/api.html');
   });
 
   app.get('/charts', function (req, res) {
-    res.render('charts', { page: 'charts' });
+    res.redirect(301, s3Base + '/charts.html');
   });
 
   ////
