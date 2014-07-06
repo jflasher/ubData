@@ -1,3 +1,5 @@
+var apiBase = 'http://ubdata.herokuapp.com/1/';
+
 var margin = {top: 20, right: 20, bottom: 60, left: 50},
     width = $('.container').width() - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
@@ -42,7 +44,7 @@ var svg3hr = d3.select("#chart3hr").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.xhr("/1/mostRecentMeasurements", function(error, data) {
+d3.xhr(apiBase + "mostRecentMeasurements", function(error, data) {
   if (error) {
     return;
   }
@@ -108,7 +110,7 @@ var svgDaily = d3.select("#chartDay").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.xhr("/1/dailyMeasurements", function(error, data) {
+d3.xhr(apiBase + "dailyMeasurements", function(error, data) {
   if (error) {
     return;
   }
@@ -175,7 +177,7 @@ $('#btnDailyAverage').on('click', function (e) {
   $('#chartDay').show();
   $('#chartMonth').hide();
 
-  $('#chartFooter').html('Data available from <a href="http://ubdata.herokuapp.com/1/dailyMeasurements">http://ubdata.herokuapp.com/1/dailyMeasurements</a>.');
+  $('#chartFooter').html('Data available from <a href="' + apiBase + 'dailyMeasurements">http://ubdata.herokuapp.com/1/dailyMeasurements</a>.');
 });
 
 $('#btnMonthlyAverage').on('click', function (e) {
@@ -199,5 +201,5 @@ $('#btn3hrAverage').on('click', function (e) {
   $('#chartDay').hide();
   $('#chartMonth').hide();
 
-  $('#chartFooter').html('Data available from <a href="http://ubdata.herokuapp.com/1/mostRecentMeasurements">http://ubdata.herokuapp.com/1/mostRecentMeasurements</a>.');
+  $('#chartFooter').html('Data available from <a href="'+ apiBase + 'mostRecentMeasurements">http://ubdata.herokuapp.com/1/mostRecentMeasurements</a>.');
 });
