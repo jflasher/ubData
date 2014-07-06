@@ -1,7 +1,10 @@
+'use strict';
+
 /*
 	Simple server to handle an incoming API call for data
 */
 var express = require('express');
+var cors = require('cors');
 var app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -12,11 +15,12 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+app.use(cors());
 app.use(app.router);
 app.use(express.static(__dirname + '/public'));
 
-require("./router")(app);
+require('./router')(app);
 
 app.listen(app.get('port'), function () {
-  console.log("Listening on " + app.get('port'));
+  console.log('Listening on ' + app.get('port'));
 });
