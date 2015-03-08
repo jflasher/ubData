@@ -1,0 +1,60 @@
+<html>
+  <meta charset="utf-8">
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">
+
+  <style>
+    html {
+      font-family: 'Lato', sans-serif;
+    }
+
+    svg {
+      font-size: 12px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .area {
+      fill: black;
+      clip-path: url(#clip);
+    }
+
+    circle {
+      clip-path: url(#clip);
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .brush .extent {
+      stroke: #fff;
+      fill-opacity: .125;
+      shape-rendering: crispEdges;
+    }
+
+    .main-title {
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      font-size: 16px;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div class="main-title">PM25 Measurements in Ulaanbatar</div>
+    <div class="subtitle">1742 measurements from 2013-5-2 to 2014-12-6</div>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

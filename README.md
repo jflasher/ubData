@@ -1,3 +1,3 @@
 # ubData
 
-All data and running example at http://data.sciencerely.org/mongolia/.
+Data visualization of Mongolian air pollution data
