@@ -49,10 +49,23 @@
       font-size: 16px;
       text-align: center;
     }
+
+    .chart {
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+    }
   </style>
   <body>
     <div class="main-title">PM25 Measurements in Ulaanbaatar (3 hr avg)</div>
     <div class="subtitle">1742 measurements from 2013-05-02 to 2014-12-06</div>
+    <div class="chart"></div>
+    <div class="footer">
+      Data is available <a href="https://github.com/jflasher/ubData/blob/gh-pages/data.csv" target="_blank">here</a>.
+    </div>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.3/d3-tip.min.js"></script>
     <script src="./main.js"></script>

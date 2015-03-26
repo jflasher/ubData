@@ -28,7 +28,7 @@ var area2 = d3.svg.area()
     .y0(height2)
     .y1(function(d) { return y2(d.pm25); });
 
-var svg = d3.select('body').append('svg')
+var svg = d3.select('.chart').append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom);
 
@@ -99,7 +99,7 @@ d3.csv('data.csv', type, function(error, data) {
   // X axis title
   var g = focus.append('g');
   g.append('text')
-    .attr('transform', 'translate(' + (width / 2) + ',' +
+    .attr('transform', 'translate(' + ((width - margin.left) / 2) + ',' +
       (height + margin.bottom) + ')')
     .style('text-anchor', 'middle')
     .attr('class', 'x axis title')
