@@ -99,7 +99,7 @@ d3.csv('data.csv', type, function(error, data) {
   // X axis title
   var g = focus.append('g');
   g.append('text')
-    .attr('transform', 'translate(' + ((width - margin.left) / 2) + ',' +
+    .attr('transform', 'translate(' + ((width - (margin.left - margin.right)) / 2) + ',' +
       (height + margin.bottom) + ')')
     .style('text-anchor', 'middle')
     .attr('class', 'x axis title')
